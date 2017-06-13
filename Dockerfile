@@ -1,9 +1,9 @@
-FROM gliderlabs/alpine:3.4
+FROM alpine:3.5
 
 # Version of RabbitMQ to install
 ENV RABBITMQ_VERSION=3.6.2
 ENV PLUGIN_BASE=v3.6.x
-ENV AUTOCLUSTER_VERSION=0.6.1
+ENV AUTOCLUSTER_VERSION=0.7.0
 ENV DELAYED_MESSAGE_VERSION=0.0.1
 ENV MESSAGE_TIMESTAMP_VERSION=3.6.x-3195a55a
 ENV TOP_VERSION=3.6.x-2d253d39
@@ -20,9 +20,8 @@ RUN \
   curl -sL -o /usr/lib/rabbitmq/plugins/rabbitmq_delayed_message_exchange-${DELAYED_MESSAGE_VERSION}.ez  http://www.rabbitmq.com/community-plugins/${PLUGIN_BASE}/rabbitmq_delayed_message_exchange-${DELAYED_MESSAGE_VERSION}.ez && \
   curl -sL -o /usr/lib/rabbitmq/plugins/rabbitmq_message_timestamp-${MESSAGE_TIMESTAMP_VERSION}.ez https://www.rabbitmq.com/community-plugins/${PLUGIN_BASE}/rabbitmq_message_timestamp-${MESSAGE_TIMESTAMP_VERSION}.ez && \
   curl -sL -o /usr/lib/rabbitmq/plugins/rabbitmq_top-${TOP_VERSION}.ez http://www.rabbitmq.com/community-plugins/${PLUGIN_BASE}/rabbitmq_top-${TOP_VERSION}.ez && \
-  curl -sL -o /tmp/autocluster-${AUTOCLUSTER_VERSION}.tgz https://github.com/aweber/rabbitmq-autocluster/releases/download/${AUTOCLUSTER_VERSION}/autocluster-${AUTOCLUSTER_VERSION}.tgz && \
-  tar -xvz -C /usr/lib/rabbitmq -f /tmp/autocluster-${AUTOCLUSTER_VERSION}.tgz && \
-  rm /tmp/autocluster-${AUTOCLUSTER_VERSION}.tgz
+  curl -sL -o /usr/lib/rabbitmq/plugins/autocluster-${AUTOCLUSTER_VERSION}.ez https://github.com/rabbitmq/rabbitmq-autocluster/releases/download/${AUTOCLUSTER_VERSION}/autocluster-${AUTOCLUSTER_VERSION}.ez && \
+  curl -sL -o /usr/lib/rabbitmq/plugins/rabbitmq_aws-${AUTOCLUSTER_VERSION}.ez https://github.com/rabbitmq/rabbitmq-autocluster/releases/download/${AUTOCLUSTER_VERSION}/rabbitmq_aws-${AUTOCLUSTER_VERSION}.ez
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN adduser -s /bin/bash -D -h /var/lib/rabbitmq rabbitmq
